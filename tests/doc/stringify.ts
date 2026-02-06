@@ -871,6 +871,21 @@ describe('custom indent', () => {
   })
 })
 
+describe('keepIndent: true', () => {
+  test('keep array indentation', () => {
+    const src = source`
+      key:
+      - name: foo
+      - name: bar
+      - name: bam
+    `
+    const doc = YAML.parseDocument(src, { keepSourceTokens: true })
+    // @ts-expect-error accessing without checking that contents is a YAMLMap, but that's ok.
+    console.dir(doc.contents.items[0], { depth: 3 })
+    expect(doc.toString({ keepIndent: true })).toBe(src)
+  })
+})
+
 describe('indentSeq: false', () => {
   let obj: unknown
   beforeEach(() => {
